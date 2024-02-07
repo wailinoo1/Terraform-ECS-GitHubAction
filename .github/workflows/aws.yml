@@ -62,7 +62,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+        aws-region: ${{ vars.AWS_REGION }}
 
     - name: Login to Amazon ECR
       id: login-ecr
@@ -77,10 +77,10 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        docker build -t ${{ env.ECR_REGISTRY }}/${{env.ECR_REPOSITORY}}:${{github.run_id}} .
-        docker push ${{ env.ECR_REGISTRY }}/${{env.ECR_REPOSITORY}}:latest
-        docker push ${{ env.ECR_REGISTRY }}/${{env.ECR_REPOSITORY}}:${{github.run_id}}
-        # echo "image=${{ env.ECR_REGISTRY }}/${{env.ECR_REPOSITORY}}:${{github.run_id}}" >> $GITHUB_OUTPUT
+        docker build -t ${{ vars.ECR_REGISTRY }}/${{vars.ECR_REPOSITORY}}:${{github.run_id}} .
+        docker push ${{ vars.ECR_REGISTRY }}/${{vars.ECR_REPOSITORY}}:latest
+        docker push ${{ vars.ECR_REGISTRY }}/${{vars.ECR_REPOSITORY}}:${{github.run_id}}
+        # echo "image=${{ vars.ECR_REGISTRY }}/${{vars.ECR_REPOSITORY}}:${{github.run_id}}" >> $GITHUB_OUTPUT
 
   #   - name: Fill in the new image ID in the Amazon ECS task definition
   #     id: task-def
