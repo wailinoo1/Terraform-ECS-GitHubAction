@@ -5,15 +5,6 @@ on:
   push:
     branches: [ "main" ]
 
-# env:
-#   AWS_REGION: MY_AWS_REGION                   # set this to your preferred AWS region, e.g. us-west-1
-#   ECR_REPOSITORY: 896836667748.dkr.ecr.ap-southeast-1.amazonaws.com           # set this to your Amazon ECR repository name
-#   ECS_SERVICE: MY_ECS_SERVICE                 # set this to your Amazon ECS service name
-#   ECS_CLUSTER: MY_ECS_CLUSTER                 # set this to your Amazon ECS cluster name
-#   ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
-#                                                # file, e.g. .aws/task-definition.json
-#   CONTAINER_NAME: MY_CONTAINER_NAME           # set this to the name of the container in the
-                                               # containerDefinitions section of your task definition
 
 permissions:
   contents: read
@@ -85,7 +76,7 @@ jobs:
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        task-definition: ${{ vars.ECS_TASK_DEFINITION }}
+        task-definition: ${{ vars.ECS_TASK_DEFINITION }} 
         container-name: ${{ vars.CONTAINER_NAME }}
         image: ${{ steps.build-image.outputs.image }}
 
