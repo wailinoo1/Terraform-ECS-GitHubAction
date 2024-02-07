@@ -54,7 +54,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: wailinoo/node:latest
+          tags: |
+            wailinoo/node:${{ github.run_id }}
+            wailinoo/node:latest
 
 
   # deploy:
