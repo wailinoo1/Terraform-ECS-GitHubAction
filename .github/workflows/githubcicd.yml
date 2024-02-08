@@ -10,6 +10,7 @@ permissions:
   contents: read
 
 jobs:  
+#If you want to Build and Push Image to Docker Hub
 #   docker:
 #     runs-on: ubuntu-latest
 #     steps:
