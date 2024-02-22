@@ -43,7 +43,7 @@ module "network" {
 
 ```terraform
 locals {
-  subnet = cidrsubnets(var.vpc_cidr_block,8,8,8,8)
+  subnet = cidrsubnets(var.vpc_cidr_block,11,11,8,8)
 }
 ```
 <h2>Load Balancer Module</h2>
@@ -61,6 +61,28 @@ module "LoadBalancer" {
 }
 ```
 <h2>ECS Module</h2>
+<p>The ECS module was designed to orchestrate containerized applications using Amazon Elastic Container Service (ECS). It facilitated the deployment and management of Docker containers across a cluster of EC2 instances or Fargate tasks. This module handled tasks such as defining ECS services, task definitions, clusters, and container configurations, ensuring the seamless execution of containerized workloads. Additionally, it integrated with other modules like the Load Balancer module to enable efficient traffic distribution and secured connections through AWS Certificate Manager, enhancing the reliability and scalability of the overall architecture.</p>
+
+```terraform
+module "ecs" {
+  source = "./ECS"
+  family_name = "terraform_node_task_definition"
+  cpu = 1024
+  memory = 2048
+  container_name = "terraform_node"
+  container_port = 8080
+  image = "Your Image URL from ECR"
+  os = "LINUX"
+  osarchitecture = "X86_64"
+  task_role_arn = "arn:aws:iam::accountID:role/ecsTaskExecutionRole"
+  ecs_cluster_name = "terraform_ecs"
+  subnetid = module.network.subnetid
+  vpcid = module.network.vpcid
+  ecs_tgb_name = "ecs-tgb"
+  tgb_ecs_arn = module.LoadBalancer.tgb_ecs_arn
+  ecs_sg_id = module.LoadBalancer.ecs_sg_id
+}
+```
 
 <h2>Terraform State Management</h2>
 <p>We are using S3 Bucket to store Terraform state files for the purpose of collaboration, version control, and consistency across teams by providing a centralized location for storing and sharing infrastructure state. This prevents conflicts and enables concurrent modifications to infrastructure as code while maintaining integrity and facilitating rollbacks when necessary.</p>
