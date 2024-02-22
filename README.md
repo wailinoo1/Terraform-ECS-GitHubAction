@@ -38,3 +38,44 @@ module "network" {
   privatertname = "private-subnet-routetable"
 }
 ```
+<p>In this module , I've used Terraform Function <b>cidrsubnet</b> for subnets.This function will generate subnetes with "10.200.0.0/24", "10.200.1.0/24", "10.200.2.0/24", "10.200.3.0/24".</p>
+<p>You can play subnet ranges as you wish for least subnet ranges</p>
+
+```terraform
+locals {
+  subnet = cidrsubnets(var.vpc_cidr_block,8,8,8,8)
+}
+```
+<h2>Load Balancer Module</h2>
+<p>The Load Balancer module was responsible for setting up the Application Load Balancer (ALB) to evenly distribute incoming traffic across ECS Containers. This component defined the ALB listeners, target groups, and health checks to ensure efficient routing of requests to healthy instances.And aslso Secured Connection with AWS Certificate Manager.</p>
+
+```terraform
+module "LoadBalancer" {
+  source = "./LoadBalancer"
+  public-subnetid = module.network.public-subnetid
+  alb-name = "terraform-ecs-alb"
+  ecs_sg_name = "terraform-ecs-sg"
+  ecs-alblogs3 = "terraform-ecs-alb-log-wlo"
+  vpcid = module.network.vpcid
+  ecs_tgb_name = "ecs-tgb-terraform"
+}
+```
+<h2>ECS Module</h2>
+
+<h2>Terraform State Management</h2>
+<p>We are using S3 Bucket to store Terraform state files for the purpose of collaboration, version control, and consistency across teams by providing a centralized location for storing and sharing infrastructure state. This prevents conflicts and enables concurrent modifications to infrastructure as code while maintaining integrity and facilitating rollbacks when necessary.</p>
+
+```terraform
+terraform {
+  backend "s3" {
+    bucket         = "your S3 Bucket name to store state file"
+    key            = "terraform.tfstate"  # Replace with a unique key for each configuration
+    region         = "ap-southeast-1"
+    encrypt        = true
+    acl            = "private"
+    #dynamodb_table = "terraform-lock"  # Optional: Use DynamoDB for state locking
+  }
+}
+```
+
+<h2>Conclusion</h2>
