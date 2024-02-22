@@ -1,4 +1,4 @@
-# ECS Infrastructure with Terraform and CICD workflow with GitHub Action
+# ECS Infrastructure with Terraform and CICD workflow using GitHub Action
 
 <h2>Project Overview</h2>
 <p>The project aimed to design and implement a scalable and resilient AWS infrastructure using Terraform for hosting containerized applications deployed with ECS Fargate. The infrastructure included network components, ECS clusters, and CI/CD automation using GitHub Actions.</p>
