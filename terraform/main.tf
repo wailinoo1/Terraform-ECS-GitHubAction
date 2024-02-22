@@ -26,10 +26,10 @@ module "ecs" {
   memory = 2048
   container_name = "terraform_node"
   container_port = 8080
-  image = "896836667748.dkr.ecr.ap-southeast-1.amazonaws.com/wlo-node:7825876950"
+  image = "Your Image URL from ECR"
   os = "LINUX"
   osarchitecture = "X86_64"
-  task_role_arn = "arn:aws:iam::896836667748:role/ecsTaskExecutionRole"
+  task_role_arn = "arn:aws:iam::accountID:role/ecsTaskExecutionRole"
   ecs_cluster_name = "terraform_ecs"
   subnetid = module.network.subnetid
   vpcid = module.network.vpcid
