@@ -9,15 +9,32 @@ resource "aws_ecs_task_definition" "definition" {
   {
     "name": "${var.container_name}",
     "image": "${var.image}",
-    "cpu": 1024,
-    "memory": 2048,
-    "essential": true,
+    "cpu": 0,
     "portMappings": [
-      {
-        "containerPort": 8080,
-        "hostPort": 8080
-      }
-    ]
+        {
+            "name": "nodejs-8080",
+            "containerPort": 8080,
+            "hostPort": 8080,
+            "protocol": "tcp",
+            "appProtocol": "http"
+        }
+    ],
+    "essential": true,
+    "environment": [],
+    "environmentFiles": [],
+    "mountPoints": [],
+    "volumesFrom": [],
+    "ulimits": [],
+    "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+            "awslogs-create-group": "true",
+            "awslogs-group": "/ecs/node",
+            "awslogs-region": "ap-southeast-1",
+            "awslogs-stream-prefix": "ecs"
+        },
+        "secretOptions": []
+    }
   }
 ]
 TASK_DEFINITION
@@ -45,10 +62,16 @@ resource "aws_ecs_service" "node_service" {
   name            = "terraform_nodejs_service"
   cluster         = aws_ecs_cluster.cluster.id
   task_definition = aws_ecs_task_definition.definition.arn
-  desired_count   = 2
-  lifecycle {
-    ignore_changes = [desired_count]
+  desired_count   = 4
+  launch_type = "FARGATE"
+  platform_version = "LATEST"
+  deployment_circuit_breaker{
+    enable = true
+    rollback = true
   }
+  # lifecycle {
+  #   ignore_changes = [desired_count]
+  # }
   
   network_configuration {
     subnets = [for subnet in var.subnetid : subnet]
@@ -61,4 +84,5 @@ resource "aws_ecs_service" "node_service" {
     container_name   = var.container_name
     container_port   = var.container_port
   }
+  depends_on = [ aws_ecs_task_definition.definition , aws_ecs_cluster.cluster ]
 }
