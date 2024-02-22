@@ -10,3 +10,17 @@
 <p><b>S3 Bucket:</b> You need to have a S3 Bucket to store Terraform State Files</p>
 
 <h2>Module Structure</h2>
+
+![CHEESE](images/structure.jpg)
+
+<h2>Terraform Command</h2>
+
+```terraform
+For Terraform Root Module:
+
+terraform init
+terraform validate
+terraform plan
+terraform apply --auto-approve
+```
+
