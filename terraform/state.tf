@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket         = "wlo-terraform-statefile-ecs"
+    bucket         = "Your S3 Bucket Name"
     key            = "terraform.tfstate"  # Replace with a unique key for each configuration
     region         = "ap-southeast-1"
     encrypt        = true
