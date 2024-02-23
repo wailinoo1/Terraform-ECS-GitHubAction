@@ -8,6 +8,7 @@
 <h2>Pre-requisites</h2>
 <p><b>Credentials:</b> Need AWS Configure
 <p><b>S3 Bucket:</b> You need to have a S3 Bucket to store Terraform State Files</p>
+<p><b>Image:</b> You need to upload a first image with tag to AWS ECR</p>
 
 <h2>Module Structure</h2>
 
